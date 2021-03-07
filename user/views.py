@@ -91,7 +91,7 @@ class UsersCompanyView(APIView):
         To obtain a new access_token this view expects a valid refresh_token
         '''
         User = get_user_model()
-        refresh_token = request.get('refresh_token')
+        refresh_token = request.data.get('refresh_token')
         if refresh_token is None:
             raise exceptions.AuthenticationFailed(
                 'Authentication credentials were not provided.')
