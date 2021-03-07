@@ -48,8 +48,9 @@ urlpatterns = [
 
     #AUTH PATHS
     # url(r'^auth/get-token', obtain_jwt_token),
+    # url(r'^auth/refresh-token/', refresh_jwt_token),
     url(r'^auth/get-token', views.UsersCompanyView.as_view()),
-    url(r'^auth/refresh-token/', refresh_jwt_token),
+
 
     #API PATHS
     path('users/', include('user.urls')),

@@ -61,9 +61,6 @@ class SafeJWTAuthentication(BaseAuthentication):
             raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
 
 
-
-
-
 def generate_access_token(user):
 
     access_token_payload = {
