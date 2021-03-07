@@ -41,5 +41,3 @@ class Lawsuit(TimeStampModel):
     observation = models.TextField()
     identifier = models.CharField(max_length=30)
     locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
-
-

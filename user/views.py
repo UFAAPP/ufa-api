@@ -42,6 +42,7 @@ class UsersCompanyView(viewsets.ViewSet):
 
     @swagger_auto_schema(request_body=UserCompanySerializer)
     def create(self, request):
-        company = CompanySerializer(request.data['company'], self).create()
-        user = 'teste'
+        company = request.data['company']
+        user = request.data
+
 
