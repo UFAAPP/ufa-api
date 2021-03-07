@@ -33,6 +33,9 @@ class UserCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 
 class UsersView(viewsets.ModelViewSet):
