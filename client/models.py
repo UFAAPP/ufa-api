@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import DO_NOTHING
+
+from company.models import Company
 
 
 class Client(models.Model):
@@ -12,3 +15,4 @@ class Client(models.Model):
     observation = models.TextField()
     phone = models.CharField(max_length=13) #5548999999999
     whatsapp = models.CharField(max_length=13) #5548999999999
+    company = models.ForeignKey(Company, on_delete=DO_NOTHING, null=False)

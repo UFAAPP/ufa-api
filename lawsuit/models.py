@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from client.models import Client
+from company.models import Company
 from util.TimeStampModel import TimeStampModel
 
 
@@ -22,6 +23,7 @@ class Locker(TimeStampModel):
 
     number = models.IntegerField()
     full = models.BooleanField()
+    company = models.ForeignKey(Company, on_delete=models.DO_NOTHING, null=False)
 
 
 class Lawsuit(TimeStampModel):
@@ -41,3 +43,4 @@ class Lawsuit(TimeStampModel):
     observation = models.TextField()
     identifier = models.CharField(max_length=30)
     locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.DO_NOTHING, null=False)

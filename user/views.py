@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company']
 
     def create(self, validated_data):
         user = super(UserSerializer, self).create(validated_data)
@@ -32,13 +32,14 @@ class UserCompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company']
+        fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company']
 
 
 class UsersView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+    http_method_names = ['post', 'patch']
 
 
 class LoginSerializer(serializers.ModelSerializer):
