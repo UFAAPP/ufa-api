@@ -52,7 +52,7 @@ class LoginRefreshSerializer(serializers.Serializer):
     refresh_token = serializers.CharField(required=True)
 
 
-class UsersCompanyView(APIView):
+class UsersAuthView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     @swagger_auto_schema(request_body=LoginSerializer, responses={200: UserCompanySerializer(many=False)})
