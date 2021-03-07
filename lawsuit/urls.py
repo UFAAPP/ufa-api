@@ -4,7 +4,7 @@ from rest_framework.routers import SimpleRouter
 from lawsuit import views
 
 router = SimpleRouter()
-router.register('', views.LawsuitView)
+router.register('lawsuit', views.LawsuitView)
 router.register('locker', views.LockerView)
 
 urlpatterns = [

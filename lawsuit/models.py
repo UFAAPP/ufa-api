@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from client.models import Client
+from util.TimeStampModel import TimeStampModel
 
 
 class Court(models.TextChoices):
@@ -15,12 +16,18 @@ class Court(models.TextChoices):
     UNICA = 'UN', _('Vara Unica')
 
 
-class Locker(models.Model):
+class Locker(TimeStampModel):
+    class Meta:
+        db_table = 'LOCKER'
+
     number = models.IntegerField()
     full = models.BooleanField()
 
 
-class Lawsuit(models.Model):
+class Lawsuit(TimeStampModel):
+    class Meta:
+        db_table = 'LAWSUIT'
+
     district = models.CharField(max_length=100)
     court = models.CharField(
         max_length=2,
