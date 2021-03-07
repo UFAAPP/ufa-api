@@ -1,9 +1,8 @@
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema, swagger_serializer_method
-from rest_framework import serializers, viewsets, status, permissions
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import serializers, viewsets, permissions
+
+from rest_framework.permissions import AllowAny
+
 
 from company.views import CompanySerializer
 from user.models import User
@@ -34,6 +33,7 @@ class UserCompanySerializer(serializers.ModelSerializer):
 class UsersView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 
 class UsersCompanyView(viewsets.ViewSet):
