@@ -12,5 +12,6 @@ class User(AbstractUser):
 
     social_number = models.CharField(max_length=14, unique=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    email = models.EmailField(unique=True, null=False)
 
     objects = UserManager()

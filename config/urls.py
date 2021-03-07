@@ -47,11 +47,12 @@ urlpatterns = [
     path('', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     #AUTH PATHS
-    url(r'^auth/get-token', obtain_jwt_token),
+    # url(r'^auth/get-token', obtain_jwt_token),
+    url(r'^auth/get-token', views.UsersCompanyView.as_view()),
     url(r'^auth/refresh-token/', refresh_jwt_token),
 
     #API PATHS
-    path('', include('user.urls')),
+    path('users/', include('user.urls')),
     path('companies/', include('company.urls')),
     path('clients/', include('client.urls')),
     path('', include('lawsuit.urls')),
