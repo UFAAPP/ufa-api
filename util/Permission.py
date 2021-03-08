@@ -7,6 +7,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext
 
+from user import models
 from util.auth import SafeJWTAuthentication
 
 
@@ -20,13 +21,14 @@ class PermissionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        PermissionMiddleware.user_id = None
+        PermissionMiddleware.company_id = None
         PermissionMiddleware.user_is_superuser = False
-
-        user = SafeJWTAuthentication.authenticate(self, request)
-        if user:
-            self.company_id = user[0].company_id
-
+        try:
+            user = SafeJWTAuthentication.authenticate(self, request)
+            if user:
+                PermissionMiddleware.company_id = user[0].company_id
+        except:
+            return self.get_response(request)
         return self.get_response(request)
 
 
@@ -38,7 +40,6 @@ class ModelPermissionManager(Manager):
 
     def get_queryset(self):
         company_id = PermissionMiddleware.company_id
-
         if PermissionMiddleware.user_is_superuser:
             return super().get_queryset().all()
         elif company_id:
@@ -50,3 +51,8 @@ class ModelPermissionManager(Manager):
             return super().get_queryset().filter(q).distinct()
         else:
             return super().get_queryset()
+
+
+class DahlBookManager(Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(company_id=PermissionMiddleware.company_id)

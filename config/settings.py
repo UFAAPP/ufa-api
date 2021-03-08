@@ -118,6 +118,7 @@ REDOC_SETTINGS = {
 }
 
 MIDDLEWARE = [
+    'util.Permission.PermissionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,7 +130,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'util.Permission.PermissionMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
