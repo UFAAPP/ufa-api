@@ -129,6 +129,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'util.Permission.PermissionMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
