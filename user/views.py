@@ -1,44 +1,16 @@
 import jwt
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import serializers, viewsets, permissions
+from rest_framework import exceptions
+from rest_framework import viewsets, permissions
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from company.views import CompanySerializer
 from user.models import User
-from django.contrib.auth import get_user_model
-from rest_framework.response import Response
-from rest_framework import exceptions
+from user.serializers import UserSerializer, LoginSerializer, UserCompanySerializer, LoginRefreshSerializer
 from util.auth import generate_access_token, generate_refresh_token
-from rest_framework.permissions import AllowAny
-
-
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company', 'password']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-    def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-
-
-class UserCompanySerializer(serializers.ModelSerializer):
-
-    company = CompanySerializer()
-
-    class Meta:
-        model = User
-        fields = ['id','first_name', 'last_name', 'email', 'is_staff', 'is_active', 'social_number', 'company']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
 
 
 class UsersView(viewsets.ModelViewSet):
@@ -46,17 +18,6 @@ class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
     http_method_names = ['post', 'patch']
-
-
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['password', 'username']
-
-
-class LoginRefreshSerializer(serializers.Serializer):
-
-    refresh_token = serializers.CharField(required=True)
 
 
 class UsersAuthView(APIView):
@@ -118,4 +79,3 @@ class UsersAuthView(APIView):
 
         access_token = generate_access_token(user)
         return Response({'access_token': access_token})
-

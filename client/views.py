@@ -1,19 +1,10 @@
 from django.http import HttpResponse
-from requests import Response
-from rest_framework import serializers, viewsets
-from rest_framework.mixins import ListModelMixin
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.utils import json
 
 from client.models import Client
-from util.Permission import PermissionMiddleware
-
-
-class ClientSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Client
-        fields = '__all__'
+from client.serializers import ClientSerializer
 
 
 class ClientView(viewsets.ModelViewSet):

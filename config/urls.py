@@ -56,5 +56,6 @@ urlpatterns = [
     path('users/', include('user.urls')),
     path('companies/', include('company.urls')),
     path('clients/', include('client.urls')),
-    path('', include('lawsuit.urls')),
+    path('lawsuit/', include('lawsuit.urls')),
+    path('locker/', include('locker.urls')),
 ]
