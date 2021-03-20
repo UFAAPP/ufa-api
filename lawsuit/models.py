@@ -1,7 +1,11 @@
+import uuid
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from client.models import Client
 from company.models import Company
+from locker.models import Locker
 from util.TimeStampModel import TimeStampModel
 
 
@@ -17,13 +21,9 @@ class Court(models.TextChoices):
     UNICA = 'UN', _('Vara Unica')
 
 
-class Locker(TimeStampModel):
-    class Meta:
-        db_table = 'LOCKER'
-
-    number = models.IntegerField()
-    full = models.BooleanField()
-    company = models.ForeignKey(Company, on_delete=models.DO_NOTHING, null=False)
+class LawsuitStatus(models.TextChoices):
+    PROGRESS = 'PROGRESS'
+    ARCHIVED = 'ARCHIVED'
 
 
 class Lawsuit(TimeStampModel):
@@ -40,7 +40,12 @@ class Lawsuit(TimeStampModel):
     code_number = models.CharField(max_length=100)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     descriptor = models.CharField(max_length=150)
-    observation = models.TextField()
-    identifier = models.CharField(max_length=30)
+    observation = models.TextField(null=True)
+    identifier = models.UUIDField(default=uuid.uuid4, editable=False)
     locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.DO_NOTHING, null=False)
+    status = models.CharField(
+        max_length=10,
+        choices=LawsuitStatus.choices,
+        default=LawsuitStatus.PROGRESS,
+    )

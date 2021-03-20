@@ -1,10 +1,10 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from lawsuit import views
+from locker import views
 
 router = SimpleRouter()
-router.register('', views.LawsuitView)
+router.register('', views.LockerView)
 
 urlpatterns = [
     path('', include(router.urls)),

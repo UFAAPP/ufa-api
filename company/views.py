@@ -1,33 +1,20 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from client.models import Client
 from company.models import Company
-from lawsuit.models import Locker, Lawsuit
-
-
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = '__all__'
+from company.serializers import CompanySerializer, CompanyTotalSerializer, CompanyTotalOutputSerializer
+from lawsuit.models import Lawsuit
+from locker.models import Locker
 
 
 class CompanyView(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [AllowAny]
-
-
-class CompanyTotalSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
-
-
-class CompanyTotalOutputSerializer(serializers.Serializer):
-    count_client = serializers.IntegerField()
-    count_locker = serializers.IntegerField()
-    count_lawsuit = serializers.IntegerField()
 
 
 class CompanyTotalView(APIView):
