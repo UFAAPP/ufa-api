@@ -10,7 +10,7 @@ class LawsuitView(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         method = self.request.method
-        if method == 'PUT' or method == 'POST':
+        if method == 'PUT' or method == 'POST' or method == 'PATCH':
             return LawsuitPostSerializer
         else:
             return LawsuitGetSerializer

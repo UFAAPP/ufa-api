@@ -26,6 +26,11 @@ class LawsuitStatus(models.TextChoices):
     ARCHIVED = 'ARCHIVED'
 
 
+class LawsuitType(models.TextChoices):
+    EXTRAJUDICIAL = 'EXTRAJUDICIAL'
+    JUDICIAL = 'JUDICIAL'
+
+
 class Lawsuit(TimeStampModel):
     class Meta:
         db_table = 'LAWSUIT'
@@ -48,4 +53,9 @@ class Lawsuit(TimeStampModel):
         max_length=10,
         choices=LawsuitStatus.choices,
         default=LawsuitStatus.PROGRESS,
+    )
+    type = models.CharField(
+        max_length=13,
+        choices=LawsuitType.choices,
+        default=LawsuitType.EXTRAJUDICIAL,
     )
