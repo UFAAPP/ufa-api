@@ -18,6 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance, validated_data):
+        if validated_data.get('password', None) is not None:
+            instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
 
 class UserCompanySerializer(serializers.ModelSerializer):
     company = CompanySerializer()

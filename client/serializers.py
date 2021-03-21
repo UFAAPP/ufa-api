@@ -8,7 +8,7 @@ class LawsuitUnrelatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lawsuit
         fields = '__all__'
-
+        depth= 1
 
 class ClientSerializer(serializers.ModelSerializer):
     lawsuits = LawsuitUnrelatedSerializer(source='lawsuit_set', many=True, required=False)
