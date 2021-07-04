@@ -1,26 +1,19 @@
-from django.http import HttpResponse
-from rest_framework import status
-from rest_framework import viewsets
-from rest_framework.utils import json
+from rest_framework.views import APIView
 
-from client.models import Client
+from client.filter import ClientsFilter
 from client.serializers import ClientSerializer
+from client.services import ClientService
+from util.mixins import ApiErrorsMixin
+from util.pagination import Pagination
 
 
-class ClientView(viewsets.ModelViewSet):
-    queryset = Client.objects.filter()
-    serializer_class = ClientSerializer
+class ClientGetView(ApiErrorsMixin, APIView):
+    pagination = Pagination()
 
-    def list(self, request, *args, **kwargs):
-        queryset = Client.objects.filter()
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-
-        return HttpResponse(json.dumps(serializer.data),
-                            content_type='application/json',
-                            status=status.HTTP_200_OK)
+    def get(self, request):
+        service = ClientService()
+        queryset = service.filter_queryset()
+        clients = ClientsFilter(request.GET, queryset=queryset)
+        page = self.pagination.paginate_queryset(clients.qs, request)
+        clients_data = ClientSerializer(page, many=True).data
+        return self.pagination.get_paginated_response(clients_data)

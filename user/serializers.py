@@ -12,17 +12,13 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
 
-    def update(self, instance, validated_data):
-        if validated_data.get('password', None) is not None:
-            instance.set_password(validated_data['password'])
-        instance.save()
-        return instance
+class UserInputSerializer(serializers.Serializer):
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    social_number = serializers.CharField(required=True, max_length=11, min_length=11)
+    password = serializers.CharField(required=True)
 
 
 class UserCompanySerializer(serializers.ModelSerializer):
@@ -34,13 +30,3 @@ class UserCompanySerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
-
-
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['password', 'username']
-
-
-class LoginRefreshSerializer(serializers.Serializer):
-    refresh_token = serializers.CharField(required=True)
