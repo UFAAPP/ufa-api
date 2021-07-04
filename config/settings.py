@@ -11,17 +11,18 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import datetime
 import os
-from pathlib import Path
+
 import django_heroku
-import dj_database_url
-import dotenv
 from django.conf import settings
+from environ import Env
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+# Read environments file
+env = Env()
+env_file = os.path.join(BASE_DIR, '.env')
+if os.path.isfile(env_file):
+    env.read_env(env_file)
 
 
 # Quick-start development settings - unsuitable for production
@@ -154,18 +155,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         # 'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': env.db_url('DATABASE_URL', default="postgres://postgres:postgres@localhost:5432/postgres")
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
