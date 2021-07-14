@@ -17,10 +17,10 @@ class UserCreateApi(ApiErrorsMixin, APIView):
         self.add_user = AddUser()
 
     def post(self, request):
-        user_serializer = UserSerializer(data=request.data)
-        user_serializer.is_valid(raise_exception=True)
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        self.add_user.add(**user_serializer.validated_data)
+        self.add_user.add(**serializer.validated_data)
 
         return Response(status=status.HTTP_201_CREATED)
 

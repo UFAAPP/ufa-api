@@ -39,7 +39,7 @@ urlpatterns = [
 
     # API PATHS
     path('v1/', include('user.urls', namespace='users')),
-    path('companies/', include('company.urls')),
+    path('v1/', include('company.urls')),
     path('v1/', include('client.urls', namespace='clients')),
     path('v1/', include('authentication.urls', namespace='authentication')),
     path('lawsuit/', include('lawsuit.urls')),
