@@ -1,22 +1,26 @@
-from rest_framework import status, permissions
+# from rest_framework.authentication import TokenAuthentication
+# from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
-from user.serializers import UserSerializer, \
-    UserInputSerializer
-from user.services import UserService
+from user.services import AddUser
+# from gym_schedule.permissions import IsAuthenticatedOrCreateOnly
+from user.serializers import UserSerializer
+
+from util.mixins import ApiErrorsMixin
 
 
-class UsersView(APIView):
-    permission_classes = (permissions.AllowAny,)
+class UserCreateApi(ApiErrorsMixin, APIView):
 
-    def get(self, request):
-        pass
+    def __init__(self):
+        self.add_user = AddUser()
 
     def post(self, request):
-        serializer = UserInputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        service = UserService()
-        response = service.create_user(**serializer.validated_data)
+        user_serializer = UserSerializer(data=request.data)
+        user_serializer.is_valid(raise_exception=True)
 
-        return Response(data=UserSerializer(response).data, status=status.HTTP_201_CREATED)
+        self.add_user.add(**user_serializer.validated_data)
+
+        return Response(status=status.HTTP_201_CREATED)
+
