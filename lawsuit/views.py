@@ -14,3 +14,6 @@ class LawsuitView(viewsets.ModelViewSet):
             return LawsuitPostSerializer
         else:
             return LawsuitGetSerializer
+
+
+

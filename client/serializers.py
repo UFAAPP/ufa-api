@@ -11,9 +11,17 @@ class LawsuitUnrelatedSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class ClientSerializer(serializers.ModelSerializer):
+class ClientSerializerDeprecated(serializers.ModelSerializer):
     lawsuits = LawsuitUnrelatedSerializer(source='lawsuit_set', many=True, required=False)
 
     class Meta:
         model = Client
         fields = '__all__'
+
+
+class ClientCreateApiInputOutputSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Client
+        fields = ['id', 'name', 'social_number', 'email', 'phone', 'whatsapp', 'observation']

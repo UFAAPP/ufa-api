@@ -42,6 +42,6 @@ urlpatterns = [
     path('v1/', include('company.urls')),
     path('v1/', include('client.urls', namespace='clients')),
     path('v1/', include('authentication.urls', namespace='authentication')),
-    path('lawsuit/', include('lawsuit.urls')),
-    path('locker/', include('locker.urls')),
+    path('v1/', include('lawsuit.urls')),
+    path('v1/', include('locker.urls')),
 ]

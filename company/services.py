@@ -1,5 +1,5 @@
 from company.models import Company
-from company.selectors import find_company_by_document_number
+from company.selectors import find_company_by_document_number, find_company_by_id
 from user.models import User
 from django.core.exceptions import ValidationError
 
@@ -14,4 +14,11 @@ class AddCompany:
         company = Company.objects.create(business_name=business_name, document_number=document_number)
         user.company = company
         user.save()
+        return company
+
+
+class LoadCompanyById:
+
+    def load(self, *, company_id):
+        company = find_company_by_id(company_id=company_id)
         return company

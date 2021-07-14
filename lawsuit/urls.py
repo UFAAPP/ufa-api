@@ -7,5 +7,5 @@ router = SimpleRouter()
 router.register('', views.LawsuitView)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('lawsuits', include(router.urls)),
 ]

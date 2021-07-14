@@ -6,36 +6,43 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from client.models import Client
-from company.serializers import CompanyTotalSerializer, CompanyTotalOutputSerializer, \
-    CompanyCreateApiInputSerializer
-from company.services import AddCompany
+from company.permissions import isCompanyOwner
+from company.serializers import CompanyTotalSerializer, CompanyTotalOutputSerializer, CompanySerializer
+from company.services import AddCompany, LoadCompanyById
 from lawsuit.models import Lawsuit
 from locker.models import Locker
 from util.auth import SafeJWTAuthentication
 from util.mixins import ApiErrorsMixin
 from rest_framework.permissions import IsAuthenticated
 
-# class CompanyView(viewsets.ModelViewSet):
-#     queryset = Company.objects.all()
-#     serializer_class = CompanyCreateApiInputSerializer
-#     permission_classes = [AllowAny]
-
 
 class CompanyCreateApi(ApiErrorsMixin, APIView):
     authentication_classes = [SafeJWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-
     def __init__(self):
         self.add_company = AddCompany()
 
     def post(self, request):
-        serializer = CompanyCreateApiInputSerializer(data=request.data)
+        serializer = CompanySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         self.add_company.add(**serializer.validated_data, user=request.user)
 
         return Response(status=status.HTTP_201_CREATED)
+
+
+class CompanyDetailApi(ApiErrorsMixin, APIView):
+    authentication_classes = [SafeJWTAuthentication]
+    permission_classes = [IsAuthenticated, isCompanyOwner]
+
+    def __init__(self):
+        self.load_company_by_id = LoadCompanyById()
+
+    def get(self, request, company_id):
+        company = self.load_company_by_id.load(company_id=company_id)
+        serializer = CompanySerializer(instance=company)
+        return Response(data=serializer.data)
 
 
 class CompanyTotalView(APIView):

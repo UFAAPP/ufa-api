@@ -7,5 +7,5 @@ router = SimpleRouter()
 router.register('', views.LockerView)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('lockers', include(router.urls)),
 ]
